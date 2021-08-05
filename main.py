@@ -1,7 +1,7 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import requests
 
-all_posts = requests.get("https://api.npoint.io/0067e63917ca7a5034d9").json()
+all_posts = requests.get("https://api.npoint.io/3ab6bac1c6a5832a27c6").json()
 
 
 app = Flask(__name__)
@@ -20,6 +20,15 @@ def about():
 @app.route("/contact")
 def contact():
     return render_template("contact.html")
+
+
+@app.route("/form-entry", methods=["POST"])
+def receive_data():
+    name = request.form["name"]
+    email = request.form["email"]
+    phone_number = request.form["phone"]
+    message = request.form["message"]
+    return f"<h1>Thanks {name}! We successfully sent your message.</h1>"
 
 
 @app.route("/post/<int:index>")
