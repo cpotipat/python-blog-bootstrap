@@ -24,8 +24,8 @@ def receive_data():
         email = request.form["email"]
         phone_number = request.form["phone"]
         message = request.form["message"]
-        return f"<h1>Thanks {name}! We successfully sent your message.</h1>"
-    return render_template("contact.html")
+        return render_template("contact.html", msg_sent=True)
+    return render_template("contact.html", msg_sent=False)
 
 
 @app.route("/post/<int:index>")
