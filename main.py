@@ -5,7 +5,6 @@ import os
 
 MY_EMAIL = os.environ.get("MY_EMAIL")
 MY_PASSWORD = os.environ.get("MY_PASSWORD")
-TO_EMAIL = os.environ.get("TO_EMAIL")
 
 all_posts = requests.get("https://api.npoint.io/3ab6bac1c6a5832a27c6").json()
 app = Flask(__name__)
@@ -24,11 +23,8 @@ def about():
 @app.route("/contact", methods=["GET", "POST"])
 def receive_data():
     if request.method == "POST":
-        name = request.form["name"]
-        email = request.form["email"]
-        phone_number = request.form["phone"]
-        message = request.form["message"]
-        send_email(name, email, phone_number, message)
+        data = request.form
+        send_email(data["name"], data["email"], data["phone"], data["message"])
         return render_template("contact.html", msg_sent=True)
     return render_template("contact.html", msg_sent=False)
 
@@ -53,7 +49,7 @@ def send_email(name, email, phone, message):
         connection.login(user=MY_EMAIL, password=MY_PASSWORD)
         connection.sendmail(
             from_addr=MY_EMAIL,
-            to_addrs=TO_EMAIL,
+            to_addrs=MY_EMAIL,
             msg=email_message
         )
 
